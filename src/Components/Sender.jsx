@@ -1,114 +1,97 @@
 import React, { Component } from 'react';
 
-import CryptoJS from 'crypto-js';
-import uniqueString from 'unique-string';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import InputLabel from '@material-ui/core/InputLabel';
+import IconButton from '@material-ui/core/IconButton';
+import TextField from '@material-ui/core/TextField';
+import KeyIcon from '@material-ui/icons/VpnKey';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 
-import IconKey from '../Assets/key.svg';
+import CryptoJS from 'crypto-js';
 
 export default class Sender extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
 			key: '',
-			clear: '',
-			encrypted: ''
+			clear: ''
 		}
-	}
-
-	onKeyChange(key){
-		this.setState({
-			key: key
-		})
-		try {
-			this.setState({
-				encrypted: CryptoJS.AES.encrypt(this.state.clear, key)
-			})
-		}
-		catch(e){}
-	}
-
-	onMessageChange(message){
-		this.setState({
-			clear: message
-		})
-		try {
-			this.setState({
-				encrypted: CryptoJS.AES.encrypt(message, this.state.key)
-			})
-		}
-		catch(e){}
 	}
 
 	render(){
+		let encrypted = '';
+		if(this.key !== this.state.key || this.clear !== this.state.clear) {
+			try {
+				encrypted = CryptoJS.AES.encrypt(this.state.clear, this.state.key).toString();
+			}
+			catch(e){}
+
+			this.key = this.state.key;
+			this.clear = this.state.clear;
+		}
 		return (
-			<div>
-				<h1 style={{
-						paddingLeft: '1rem'
-					}}>Sender</h1>
-				<div style={{
-						padding: '1em'
-					}}>
-					<input
-						onChange={(e)=>this.onKeyChange(e.target.value)}
-						value={this.state.key}
-						placeholder="Choose a key"
-						style={{
-							color: 'inherit',
-							font: 'inherit',
-							letterSpacing: 'inherit',
-							border: '1px solid lightgrey',
-							borderRadius: '0.2em',
-							padding: '0.5em'
-						}}/>
-					<button
-						onClick={()=>this.onKeyChange(uniqueString().substr(0, 8))}
-						title="Click to generate a new random key"
-						style={{
-							border: 'none',
-							background: 'transparent',
-							cursor: 'pointer',
-							width: '2em',
-							height: '2em',
-							padding: '0.5em',
-							margin: '0'
-						}}
-						><img alt="key" src={IconKey} style={{height: '100%'}}/></button>
-				</div>
-				<div style={{
-						padding: '1em'
-					}}>
-					<textarea
-						onChange={(e)=>this.onMessageChange(e.target.value)}
-						value={this.state.clear}
-						placeholder="Write your message here"
-						style={{
-							resize: 'none',
-							font: 'inherit',
-							color: 'inherit',
-							letterSpacing: 'inherit',
-							border: '1px solid lightgrey',
-							borderRadius: '0.2em',
-							padding: '0.5em'
-						}}></textarea>
-				</div>
-				<div style={{
-						padding: '1em'
-					}}>
-					<textarea
-						readOnly
-						value={this.state.encrypted}
-						placeholder="Encrypted message will appear here"
-						style={{
-							resize: 'none',
-							font: 'inherit',
-							color: 'inherit',
-							letterSpacing: 'inherit',
-							border: '1px solid lightgrey',
-							borderRadius: '0.2em',
-							padding: '0.5em'
-						}}></textarea>
-				</div>
-			</div>
+			<Grid container>
+				<Grid item xs={12}>
+					<Typography variant="title">
+						Sender
+					</Typography>
+				</Grid>
+
+				<Grid item xs={12}>
+					<FormControl fullWidth>
+						<InputLabel htmlFor="sender-key">Key</InputLabel>
+						<Input
+							id="sender-key"
+							type="text"
+							value={this.state.key}
+							placeholder="Choose a secret key"
+							onChange={(e)=>this.setState({key: e.target.value})}
+							endAdornment={
+								<InputAdornment position="end">
+									<IconButton
+										title="Generate a random key"
+										onClick={()=>this.setState({key: Math.random().toString(36).substring(2, 8)})}>
+										<KeyIcon/>
+									</IconButton>
+								</InputAdornment>
+							}
+							/>
+					</FormControl>
+				</Grid>
+
+				<Grid item xs={12}>
+					<FormControl fullWidth>
+						<TextField
+							id="sender-message"
+							label="Your message"
+							placeholder="Write a message to encrypt"
+							multiline
+							rows="4"
+							value={this.state.clear}
+							onChange={(e)=>this.setState({clear: e.target.value})}
+							margin="normal"
+						/>
+					</FormControl>
+				</Grid>
+
+				<Grid item xs={12}>
+					<FormControl fullWidth>
+						<TextField
+							id="sender-encrypted"
+							label="Encrypted message"
+							placeholder="Your encrypted message will appear here"
+							multiline
+							readOnly
+							rows="4"
+							value={encrypted}
+							margin="normal"
+						/>
+					</FormControl>
+				</Grid>
+			</Grid>
 		)
 	}
 }

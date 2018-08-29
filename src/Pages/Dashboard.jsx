@@ -1,27 +1,35 @@
 import React, { Component } from 'react';
 
-import Dashboard from "../Components/Dashboard";
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import InfoIcon from '@material-ui/icons/Info';
 
-import IconInfo from '../Assets/info.svg';
+import Dashboard from "../Components/Dashboard";
 
 export default class DashboardPage extends Component {
 	render(){
 		return (
 			<div>
-				<div style={{textAlign: 'right'}}>
-					<button
-						style={{
-							background: 'transparent',
-							cursor: 'pointer',
-							border: 'none',
-							padding: 0,
-							margin: 0
-						}}
-						title="About this app"
-						onClick={()=>this.props.history.push('/info')}>
-						<img alt="Info" src={IconInfo}/>
-					</button>
-				</div>
+				<AppBar
+					position="static"
+					color="default">
+					<Toolbar>
+						<Typography
+							variant="title"
+							color="inherit"
+							style={{flexGrow: 1}}>
+							Dashboard
+						</Typography>
+
+						<IconButton
+							title="About this app"
+							onClick={()=>this.props.history.push('/info')}>
+							<InfoIcon/>
+						</IconButton>
+					</Toolbar>
+				</AppBar>
 
 				<Dashboard/>
 			</div>

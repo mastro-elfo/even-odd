@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
 
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+
 import CryptoJS from 'crypto-js';
 
 export default class Recipient extends Component {
@@ -19,61 +26,58 @@ export default class Recipient extends Component {
 		catch(e){}
 
 		return (
-			<div>
-				<h1 style={{
-						paddingLeft: '1rem'
-					}}>Recipient</h1>
-				<div style={{
-						padding: '1em'
-					}}>
-					<input
-						onChange={(e)=>this.setState({key:e.target.value})}
-						placeholder="Write the recipient's key"
-						value={this.state.key}
-						style={{
-							color: 'inherit',
-							font: 'inherit',
-							letterSpacing: 'inherit',
-							border: '1px solid lightgrey',
-							borderRadius: '0.2em',
-							padding: '0.5em'
-						}}/>
-				</div>
-				<div style={{
-						padding: '1em'
-					}}>
-					<textarea
-						onChange={(e)=>this.setState({encrypted:e.target.value})}
-						value={this.state.encrypted}
-						placeholder="Write the recipient's encrypted message here"
-						style={{
-							resize: 'none',
-							font: 'inherit',
-							color: 'inherit',
-							letterSpacing: 'inherit',
-							border: '1px solid lightgrey',
-							borderRadius: '0.2em',
-							padding: '0.5em'
-						}}></textarea>
-				</div>
-				<div style={{
-						padding: '1em'
-					}}>
-					<textarea
-						readOnly
-						value={clear}
-						placeholder="Decrypted message will appear here"
-						style={{
-							resize: 'none',
-							font: 'inherit',
-							color: 'inherit',
-							letterSpacing: 'inherit',
-							border: '1px solid lightgrey',
-							borderRadius: '0.2em',
-							padding: '0.5em'
-						}}></textarea>
-				</div>
-			</div>
+			<Grid container
+				direction="column">
+				<Grid item xs={12}>
+					<Typography variant="title">
+						Recipient
+					</Typography>
+				</Grid>
+
+				<Grid item xs={12}>
+					<FormControl fullWidth>
+						<InputLabel htmlFor="recipient-key">Key</InputLabel>
+						<Input
+							id="recipient-key"
+							type="text"
+							label="Key"
+							value={this.state.key}
+							placeholder="Write the recipient's key"
+							onChange={(e)=>this.setState({key:e.target.value})}
+							/>
+					</FormControl>
+				</Grid>
+
+				<Grid item xs={12}>
+					<FormControl fullWidth>
+						<TextField
+							id="recipient-encrypted"
+							label="Encrypted message"
+							placeholder="Write the recipient's encrypted message here"
+							multiline
+							rows="4"
+							value={this.state.encrypted}
+							margin="normal"
+							onChange={(e)=>this.setState({encrypted:e.target.value})}
+						/>
+					</FormControl>
+				</Grid>
+
+				<Grid item xs={12}>
+					<FormControl fullWidth>
+						<TextField
+							id="recipient-message"
+							label="Decrypted message"
+							placeholder="Decrypted message will appear here"
+							multiline
+							readOnly
+							rows="4"
+							value={clear}
+							margin="normal"
+						/>
+					</FormControl>
+				</Grid>
+			</Grid>
 		)
 	}
 }
