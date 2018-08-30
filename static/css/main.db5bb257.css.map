@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.css"],"names":[],"mappings":"AAAA,KACE,SACA,UACA,oCACA,cACA,iBAAmB","file":"static/css/main.db5bb257.css","sourcesContent":["body {\n  margin: 0;\n  padding: 0;\n  font-family: Roboto, Arial, sans-serif;\n  color: dimgrey;\n  overflow-x: hidden;\n}\n\n\n\n// WEBPACK FOOTER //\n// ./src/index.css"],"sourceRoot":""}
