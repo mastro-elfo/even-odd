@@ -13,8 +13,7 @@ export default class DashboardPage extends Component {
 		return (
 			<div>
 				<AppBar
-					position="static"
-					color="default">
+					position="static">
 					<Toolbar>
 						<Typography
 							variant="title"
@@ -25,6 +24,7 @@ export default class DashboardPage extends Component {
 
 						<IconButton
 							title="About this app"
+							color="inherit"
 							onClick={()=>this.props.history.push('/info')}>
 							<InfoIcon/>
 						</IconButton>

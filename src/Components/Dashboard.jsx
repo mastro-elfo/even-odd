@@ -1,29 +1,87 @@
 import React, { Component } from 'react';
 
-// import ReactSwipeEvents from 'react-swipe-events'
+import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
+
+import SwipeableViews from 'react-swipeable-views';
 
 import Sender from './Sender';
 import Recipient from './Recipient';
 
+import CryptoJS from 'crypto-js';
+
 export default class Dashboard extends Component {
+	state = {
+		senderKey: "",
+		senderClear: "",
+		senderEncrypted: "",
+		recipientKey: "",
+		recipientClear: "",
+		recipientEncrypted: "",
+		tab: 0
+	}
+
+	onChange = what => value => {
+		this.setState({
+			[what]: value
+		})
+	}
+
 	render(){
+		const {senderKey, senderClear, recipientKey, recipientEncrypted} = this.state;
+
+		const senderEncrypted = CryptoJS.AES.encrypt(senderClear, senderKey).toString()
+
+		const recipientClear = CryptoJS.AES.decrypt(recipientEncrypted, recipientKey).toString(CryptoJS.enc.Utf8);
+
 		return (
 			<div style={{
 					padding: "1em"
 				}}>
-				<Grid container
-					spacing={40}
-					justify="center">
+				<Hidden only="xs">
+					<Grid container
+						spacing={40}
+						justify="center">
+						<Grid item xs={6}>
+							<Sender
+								sKey={senderKey}
+								clear={senderClear}
+								encrypted={senderEncrypted}
+								onChangeKey={this.onChange("senderKey")}
+								onChangeClear={this.onChange("senderClear")}/>
+						</Grid>
 
-					<Grid item xs={6}>
-						<Sender/>
+						<Grid item xs={6}>
+							<Recipient
+								sKey={recipientKey}
+								clear={recipientClear}
+								encrypted={recipientEncrypted}
+								onChangeKey={this.onChange("recipientKey")}
+								onChangeEncrypted={this.onChange("recipientEncrypted")}/>
+						</Grid>
 					</Grid>
+				</Hidden>
 
-					<Grid item xs={6}>
-						<Recipient/>
-					</Grid>
-				</Grid>
+				<Hidden smUp>
+					<SwipeableViews
+						index={this.state.tab}
+						onChangeIndex={(tab)=>this.setState({tab})}>
+						<Sender
+							sKey={senderKey}
+							clear={senderClear}
+							encrypted={senderEncrypted}
+							onChangeKey={this.onChange("senderKey")}
+							onChangeClear={this.onChange("senderClear")}
+							onClick={()=>this.setState({tab: 1})}/>
+						<Recipient
+							sKey={recipientKey}
+							clear={recipientClear}
+							encrypted={recipientEncrypted}
+							onChangeKey={this.onChange("recipientKey")}
+							onChangeEncrypted={this.onChange("recipientEncrypted")}
+							onClick={()=>this.setState({tab: 0})}/>
+					</SwipeableViews>
+				</Hidden>
 			</div>
 		)
 	}

@@ -13,11 +13,11 @@ export default class InfoPage extends Component {
 		return (
 			<div>
 				<AppBar
-					position="static"
-					color="default">
+					position="static">
 					<Toolbar>
 						<IconButton
 							title="Back to main view"
+							color="inherit"
 							onClick={()=>this.props.history.goBack()}>
 							<BackIcon/>
 						</IconButton>

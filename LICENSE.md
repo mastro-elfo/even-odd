@@ -1,4 +1,4 @@
-Copyright (c) 2017 mastro-elfo
+Copyright (c) 2018 mastro-elfo
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
